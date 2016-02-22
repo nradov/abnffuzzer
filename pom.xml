@@ -1,0 +1,137 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github</groupId>
+	<artifactId>AbnfFuzzer</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<detectLinks>true</detectLinks>
+					<links>
+						<link>http://www.antlr.org/api/Java/</link>
+						<link>http://junit.org/javadoc/latest/</link>
+					</links>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>4.5.1-1</version>
+				<executions>
+					<execution>
+						<id>antlr</id>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.9</version>
+				<configuration>
+					<message>Generated site for site-maven-plugin 0.9</message>
+					<!-- Destination directory -->
+					<path>site-plugin</path>
+					<merge>true</merge>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site-deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<!-- https://github.github.com/maven-plugins/site-plugin/phase.html -->
+					<skipDeploy>true</skipDeploy>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4</artifactId>
+			<version>4.5.1-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>4.5.1-1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<name>ABNF Fuzzer</name>
+	<url>https://github.com/nradov/AbnfFuzzer</url>
+	<issueManagement>
+		<url>https://github.com/nradov/AbnfFuzzer/issues</url>
+		<system>GitHub</system>
+	</issueManagement>
+	<scm>
+		<connection>scm:git:git://github.com/nradov/AbnfFuzzer</connection>
+		<url>https://github.com/nradov/AbnfFuzzer</url>
+	</scm>
+	<description>
+		Fuzz tester for Augmented Backus-Naur Form (ABNF) rules as defined in
+		IETF RFC 5234. This library can directly parse a variety of input
+		sources and extract the ABNF rules, then generate random output matching
+		those rules. That output can be fed in a test framework such as JUnit to
+		search for defects in an application which implements the rules. The
+		most common use case would be testing implementations of other IETF RFCs.
+	</description>
+	<developers>
+		<developer>
+			<id>nradov</id>
+			<name>Nick Radov</name>
+			<email>nradov@gmail.com</email>
+				<url>https://github.com/nradov</url>
+				<timezone>America/Los_Angeles</timezone>
+				<properties>
+					<picUrl>https://avatars3.githubusercontent.com/u/6307271?v=3&amp;s=460</picUrl>
+				</properties>
+		</developer>
+	</developers>
+
+</project>
