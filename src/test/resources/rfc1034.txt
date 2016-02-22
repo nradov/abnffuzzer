@@ -1,0 +1,7 @@
+domain = subdomain / " "
+subdomain = label / subdomain "." label
+label = letter [ [ ldh-str ] let-dig ]
+ldh-str = let-dig-hyp / let-dig-hyp ldh-str
+let-dig-hyp = let-dig / "-"
+let-dig = letter / DIGIT
+letter = %x41-5A / %x61-7A
