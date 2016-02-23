@@ -23,6 +23,11 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import com.github.abnffuzzer.AbnfParser.ElementsContext;
 import com.github.abnffuzzer.AbnfParser.Rule_Context;
@@ -52,6 +57,55 @@ public class Fuzzer {
 
     /** Map of rule names to their elements. */
     private final Map<String, Rule> ruleList;
+
+    /**
+     * Parse a set of ABNF rules and generate one or more matching random
+     * values. By default it reads the rules from {@code stdin} and writes one
+     * value to {@code stdout}. Command-line parameters can be used to read from
+     * and write to files, and to generate multiple values.
+     *
+     * @param args
+     *            command line arguments
+     * @throws ParseException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static void main(final String[] args)
+            throws ParseException, IOException, URISyntaxException {
+        final Options options = new Options();
+        options.addOption("n", "count", true,
+                "specify the number of random values to generate (default to 1)");
+        options.addOption("s", "separator", true,
+                "string inserted between output values (default to the \"line.separator\" property)");
+        options.addOption("i", "input", true, "input file path");
+        options.addOption("o", "output", true, "output file path");
+        options.addOption("e", "encoding", true,
+                "character encoding (default to US ASCII)");
+        final CommandLineParser parser = new DefaultParser();
+        final CommandLine cmd = parser.parse(options, args);
+        final int count;
+        if (cmd.hasOption("count")) {
+            count = Integer.parseInt(cmd.getOptionValue("count"));
+            if (count < 1) {
+                throw new IllegalArgumentException("count must be >= 1");
+            }
+        } else {
+            count = 1;
+        }
+
+        final Fuzzer f;
+        if (cmd.hasOption("input")) {
+            f = new Fuzzer(new File(cmd.getOptionValue("input")));
+        } else {
+            f = new Fuzzer(System.in);
+        }
+
+        if (cmd.getArgList().size() != 1) {
+            throw new IllegalArgumentException("must specify 1 rule name");
+        }
+        final String ruleName = cmd.getArgList().get(0);
+        System.out.print(f.generateAscii(ruleName));
+    }
 
     public Fuzzer(final URL url) throws URISyntaxException, IOException {
         this(url.openStream());
