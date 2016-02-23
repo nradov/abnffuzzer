@@ -37,7 +37,7 @@
 						<link>https://docs.oracle.com/javaee/7/api/</link>
 					</links>
 				</configuration>
-				<version>[2.10.3,)</version>
+				<version>2.10.3</version>
 			</plugin>
 			<plugin>
 				<groupId>org.antlr</groupId>
