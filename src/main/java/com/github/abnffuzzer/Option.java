@@ -3,7 +3,7 @@ package com.github.abnffuzzer;
 import java.util.Random;
 import java.util.Set;
 
-import com.github.abnffuzzer.AbnfParser.OptionContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.OptionContext;
 
 public class Option extends Element {
 

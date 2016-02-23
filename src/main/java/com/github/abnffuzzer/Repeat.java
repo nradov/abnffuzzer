@@ -1,6 +1,6 @@
 package com.github.abnffuzzer;
 
-import com.github.abnffuzzer.AbnfParser.RepeatContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.RepeatContext;
 
 public class Repeat extends Element {
 

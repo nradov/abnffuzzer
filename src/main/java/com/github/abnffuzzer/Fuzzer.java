@@ -29,8 +29,10 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.github.abnffuzzer.AbnfParser.ElementsContext;
-import com.github.abnffuzzer.AbnfParser.Rule_Context;
+import com.github.abnffuzzer.antlr4.AbnfLexer;
+import com.github.abnffuzzer.antlr4.AbnfParser;
+import com.github.abnffuzzer.antlr4.AbnfParser.ElementsContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.Rule_Context;
 import com.github.abnffuzzer.core.Alpha;
 import com.github.abnffuzzer.core.Bit;
 import com.github.abnffuzzer.core.Char;

@@ -8,13 +8,13 @@ import java.util.Set;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import com.github.abnffuzzer.AbnfParser.AlternationContext;
-import com.github.abnffuzzer.AbnfParser.ConcatenationContext;
-import com.github.abnffuzzer.AbnfParser.ElementContext;
-import com.github.abnffuzzer.AbnfParser.GroupContext;
-import com.github.abnffuzzer.AbnfParser.OptionContext;
-import com.github.abnffuzzer.AbnfParser.RepeatContext;
-import com.github.abnffuzzer.AbnfParser.RepetitionContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.AlternationContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.ConcatenationContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.ElementContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.GroupContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.OptionContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.RepeatContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
 
 public class Element {
 

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import com.github.abnffuzzer.AbnfParser.RepeatContext;
-import com.github.abnffuzzer.AbnfParser.RepetitionContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.RepeatContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
 
 public class Repetition extends Element {
 

@@ -1,6 +1,6 @@
 package com.github.abnffuzzer;
 
-import com.github.abnffuzzer.AbnfParser.ConcatenationContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.ConcatenationContext;
 
 public class Concatenation extends Element {
 

@@ -1,6 +1,6 @@
 package com.github.abnffuzzer;
 
-import com.github.abnffuzzer.AbnfParser.GroupContext;
+import com.github.abnffuzzer.antlr4.AbnfParser.GroupContext;
 
 public class Group extends Element {
 
