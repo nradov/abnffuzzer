@@ -1,17 +1,14 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 import java.util.Random;
 import java.util.Set;
-
-import com.github.abnffuzzer.Fuzzer;
-import com.github.abnffuzzer.Rule;
 
 /**
  * ALPHA = %x41-5A / %x61-7A. A-Z / a-z.
  *
  * @author Nick Radov
  */
-public final class Alpha extends Rule {
+final class Alpha extends Rule {
 
     private static final byte[] CHARS = new byte[52];
 

@@ -16,5 +16,21 @@
 	</p>
 	<p>This library does not support the original BNF format. However
 		you can manually update the syntax to match.</p>
+	<p>
+		In order to use the library you must first create an input file
+		containing ABNF rule definitions. In most cases you can do this by
+		copying and pasting rules from a larger specification document such as
+		an IETF RFC. Create a
+		<code>Fuzzer</code>
+		object from that file, and then call one of the
+		<code>generate</code>
+		methods to create each test value. For example, if you want to test an
+		implementation of an ABNF rule named "foo" from RFC "9999" the code
+		would look something like this.</p>
+	<pre>
+File file = new File("rfc9999.txt");
+Fuzzer fuzzer = new Fuzzer(file);
+System.out.println(fuzzer.generateAscii("foo"));
+		</pre>
 </BODY>
 </HTML>

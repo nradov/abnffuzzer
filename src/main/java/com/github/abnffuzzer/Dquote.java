@@ -1,11 +1,11 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 /**
  * %x22. " (Double Quote)
  *
  * @author Nick Radov
  */
-public final class Dquote extends Fixed {
+final class Dquote extends Fixed {
 
     private static final byte[] DQUOTE = new byte[] { '"' };
 

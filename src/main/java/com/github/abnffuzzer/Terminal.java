@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class Terminal extends Element {
+class Terminal extends Element {
 
     private final String value;
 

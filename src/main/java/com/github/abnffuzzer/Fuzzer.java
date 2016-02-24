@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,23 +33,14 @@ import com.github.abnffuzzer.antlr4.AbnfLexer;
 import com.github.abnffuzzer.antlr4.AbnfParser;
 import com.github.abnffuzzer.antlr4.AbnfParser.ElementsContext;
 import com.github.abnffuzzer.antlr4.AbnfParser.Rule_Context;
-import com.github.abnffuzzer.core.Alpha;
-import com.github.abnffuzzer.core.Bit;
-import com.github.abnffuzzer.core.Char;
-import com.github.abnffuzzer.core.Cr;
-import com.github.abnffuzzer.core.CrLf;
-import com.github.abnffuzzer.core.Ctl;
-import com.github.abnffuzzer.core.Digit;
-import com.github.abnffuzzer.core.Dquote;
-import com.github.abnffuzzer.core.Hexdig;
-import com.github.abnffuzzer.core.Htab;
-import com.github.abnffuzzer.core.Lf;
-import com.github.abnffuzzer.core.Lwsp;
-import com.github.abnffuzzer.core.Octet;
-import com.github.abnffuzzer.core.Sp;
-import com.github.abnffuzzer.core.Vchar;
-import com.github.abnffuzzer.core.Wsp;
 
+/**
+ * Main class for fuzz testing. Instantiate this class with a set of ABNF rules
+ * and then call one of the {@code generate} methods to create random output
+ * suitable for use in a test.
+ *
+ * @author Nick Radov
+ */
 public class Fuzzer {
 
     @SuppressWarnings("unused")
@@ -69,11 +60,12 @@ public class Fuzzer {
      * @param args
      *            command line arguments
      * @throws ParseException
-     * @throws URISyntaxException
+     *             if the command line can't be parsed
      * @throws IOException
+     *             if an error occurs reading the input or writing the output
      */
     public static void main(final String[] args)
-            throws ParseException, IOException, URISyntaxException {
+            throws ParseException, IOException {
         final Options options = new Options();
         options.addOption("n", "count", true,
                 "specify the number of random values to generate (default to 1)");
@@ -109,26 +101,74 @@ public class Fuzzer {
         System.out.print(f.generateAscii(ruleName));
     }
 
-    public Fuzzer(final URL url) throws URISyntaxException, IOException {
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a URL.
+     *
+     * @param url
+     *            location of ANBF rules
+     * @throws IOException
+     *             if the rules can't be read from the URL
+     */
+    public Fuzzer(final URL url) throws IOException {
         this(url.openStream());
     }
 
-    public Fuzzer(final URI uri) throws URISyntaxException, IOException {
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a URI.
+     *
+     * @param uri
+     *            location of ANBF rules
+     * @throws IOException
+     *             if the rules can't be read from the URI
+     */
+    public Fuzzer(final URI uri) throws IOException {
         this(uri.toURL());
     }
 
-    public Fuzzer(final File file) throws IOException, URISyntaxException {
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a file.
+     *
+     * @param file
+     *            location of ANBF rules
+     * @throws IOException
+     *             if the rules can't be read from the file
+     */
+    public Fuzzer(final File file) throws IOException {
         this(file.toURI());
     }
 
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a stream.
+     *
+     * @param is
+     *            ANBF rules
+     * @throws IOException
+     *             if the rules can't be read from the stream
+     */
     public Fuzzer(final InputStream is) throws IOException {
         this(new InputStreamReader(is));
     }
 
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a string.
+     *
+     * @param rules
+     *            ANBF rules
+     * @throws IOException
+     *             if the rules can't be read
+     */
     public Fuzzer(final String rules) throws IOException {
         this(new StringReader(rules));
     }
 
+    /**
+     * Create a new {@code Fuzzer} by reading ABNF rules from a reader.
+     *
+     * @param rules
+     *            ANBF rules
+     * @throws IOException
+     *             if the rules can't be read
+     */
     @SuppressWarnings("serial")
     public Fuzzer(final Reader rules) throws IOException {
         final AbnfLexer l = new AbnfLexer(new ANTLRInputStream(rules));
@@ -189,7 +229,7 @@ public class Fuzzer {
      * @throws IllegalStateException
      *             if any defined rule references another rule which doesn't
      *             exist
-     * @see #generate(CharSequence, Set)
+     * @see #generate(String, Set)
      */
     public byte[] generate(final String ruleName) {
         return generate(ruleName, Collections.<String> emptySet());
@@ -214,16 +254,67 @@ public class Fuzzer {
      */
     public String generateAscii(final String ruleName,
             final Set<String> exclude) {
-        return new String(generate(ruleName, exclude),
-                StandardCharsets.US_ASCII);
+        return generate(ruleName, exclude, StandardCharsets.US_ASCII);
     }
 
+    /**
+     * Generate a random sequence of characters which matches a named ABNF rule.
+     * The output will be suitable for use in a fuzz test.
+     *
+     * @param ruleName
+     *            ABNF rule name
+     * @return random sequence of characters which matches the specified rule
+     *         encoded in the US_ASCII character set
+     * @throws IllegalArgumentException
+     *             if {@code ruleName} doesn't exist
+     * @throws IllegalStateException
+     *             if any defined rule references another rule which doesn't
+     *             exist
+     */
     public String generateAscii(final String ruleName) {
         return generateAscii(ruleName, Collections.<String> emptySet());
     }
 
+    /**
+     * Generate a random sequence of bytes which matches a named ABNF rule. The
+     * output will be suitable for use in a fuzz test.
+     *
+     * @param ruleName
+     *            ABNF rule name
+     * @param exclude
+     *            rule names to exclude when generating output
+     * @return random sequence of bytes which matches the specified rule
+     * @throws IllegalArgumentException
+     *             if {@code ruleName} doesn't exist
+     * @throws IllegalStateException
+     *             if any defined rule references another rule which doesn't
+     *             exist
+     */
     public byte[] generate(final String ruleName, final Set<String> exclude) {
         return getRule(ruleName).generate(this, getRandom(), exclude);
+    }
+
+    /**
+     * Generate a random sequence of characters which matches a named ABNF rule.
+     * The output will be suitable for use in a fuzz test.
+     *
+     * @param ruleName
+     *            ABNF rule name
+     * @param exclude
+     *            rule names to exclude when generating output
+     * @param charset
+     *            encoding for the return value
+     * @return random sequence of characters which matches the specified rule
+     *         encoded in the specified character set
+     * @throws IllegalArgumentException
+     *             if {@code ruleName} doesn't exist
+     * @throws IllegalStateException
+     *             if any defined rule references another rule which doesn't
+     *             exist
+     */
+    public String generate(final String ruleName, final Set<String> exclude,
+            final Charset charset) {
+        return new String(generate(ruleName, exclude), charset);
     }
 
     // built in rules
@@ -251,7 +342,16 @@ public class Fuzzer {
                 }
             });
 
-    public Rule getRule(final CharSequence ruleName) {
+    /**
+     * Get a defined ABNF rule.
+     *
+     * @param ruleName
+     *            rule name (could be one of the core rules defined in RFC 5234)
+     * @return the rule
+     * @throws IllegalArgumentException
+     *             if the rule name isn't defined
+     */
+    Rule getRule(final String ruleName) {
         if (BUILT_IN_RULES.containsKey(ruleName)) {
             return BUILT_IN_RULES.get(ruleName);
         } else if (ruleList.containsKey(ruleName)) {

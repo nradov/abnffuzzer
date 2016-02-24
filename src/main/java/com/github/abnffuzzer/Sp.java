@@ -1,11 +1,11 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 /**
  * %x20.
  *
  * @author Nick Radov
  */
-public final class Sp extends Fixed {
+final class Sp extends Fixed {
 
     private static final byte[] SP = new byte[] { ' ' };
 

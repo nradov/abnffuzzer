@@ -3,7 +3,7 @@ package com.github.abnffuzzer;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class RuleList extends TreeMap<String, Rule> {
+class RuleList extends TreeMap<String, Rule> {
 
     private static final String LINE_SEPARATOR = System
             .getProperty("line.separator");

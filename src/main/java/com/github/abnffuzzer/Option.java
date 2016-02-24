@@ -5,8 +5,21 @@ import java.util.Set;
 
 import com.github.abnffuzzer.antlr4.AbnfParser.OptionContext;
 
-public class Option extends Element {
+/**
+ * Optional Sequence: [RULE].
+ *
+ * @author Nick Radov
+ * @see <a href="https://tools.ietf.org/html/rfc5234#section-3.8" target="_">
+ *      IETF RFC 5234: 3.8. Optional Sequence: [RULE]</a>
+ */
+class Option extends Element {
 
+    /**
+     * Create a new {@code Option} from an ANTLR context.
+     *
+     * @param elements
+     *            ANTLR context
+     */
     public Option(final OptionContext elements) {
         super(elements);
     }

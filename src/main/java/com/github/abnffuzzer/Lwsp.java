@@ -1,12 +1,9 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-import com.github.abnffuzzer.Fuzzer;
-import com.github.abnffuzzer.Rule;
 
 /**
  * *(WSP / CRLF WSP). Use of this linear-white-space rule permits lines
@@ -16,7 +13,7 @@ import com.github.abnffuzzer.Rule;
  *
  * @author Nick Radov
  */
-public class Lwsp extends Rule {
+class Lwsp extends Rule {
 
     private static final Wsp WSP = new Wsp();
     private static final CrLf CRLF = new CrLf();

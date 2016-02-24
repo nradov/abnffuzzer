@@ -16,7 +16,12 @@ import com.github.abnffuzzer.antlr4.AbnfParser.OptionContext;
 import com.github.abnffuzzer.antlr4.AbnfParser.RepeatContext;
 import com.github.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
 
-public class Element {
+/**
+ * Base class for all elements in an ABNF rule.
+ *
+ * @author Nick Radov
+ */
+class Element {
 
     final List<Element> elements = new ArrayList<Element>();
 
@@ -51,8 +56,7 @@ public class Element {
                 if (!(value.startsWith("[") || value.startsWith("]")
                         || value.startsWith("(") || value.startsWith(")")
                         || value.startsWith("/") || value.startsWith("*"))) {
-                    this.elements.add(
-                            new com.github.abnffuzzer.Terminal(tn));
+                    this.elements.add(new com.github.abnffuzzer.Terminal(tn));
                 }
             } else {
                 throw new IllegalArgumentException(
@@ -61,6 +65,14 @@ public class Element {
         }
     }
 
+    /**
+     * Concatenate a list of multiple byte arrays into a single byte array.
+     *
+     * @param content
+     *            zero or more byte arrays
+     * @return a single byte array containing all of the parameter byte arrays
+     *         in order
+     */
     public static byte[] concatenate(final List<byte[]> content) {
         if (content.size() == 1) {
             return content.get(0);
@@ -77,13 +89,6 @@ public class Element {
         for (final byte[] b : content) {
             System.arraycopy(b, 0, generated, destPos, b.length);
             destPos += b.length;
-        }
-
-        // TODO: remove this debugging code
-        for (final byte element : generated) {
-            if (element == (byte) '[') {
-                System.out.println();
-            }
         }
 
         return generated;

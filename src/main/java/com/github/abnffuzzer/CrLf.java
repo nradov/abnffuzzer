@@ -1,11 +1,11 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 /**
  * CR LF. Internet standard newline.
  *
  * @author Nick Radov
  */
-public final class CrLf extends Fixed {
+final class CrLf extends Fixed {
 
     private static final byte[] CRLF = new byte[] { '\r', '\n' };
 

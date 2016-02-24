@@ -8,7 +8,7 @@ import java.util.Set;
 import com.github.abnffuzzer.antlr4.AbnfParser.RepeatContext;
 import com.github.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
 
-public class Repetition extends Element {
+class Repetition extends Element {
 
     private static final String VARIABLE = "*";
 

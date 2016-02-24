@@ -1,4 +1,4 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 /**
  * %x0A. Linefeed.
@@ -6,7 +6,7 @@ package com.github.abnffuzzer.core;
  * @author Nick Radov
  *
  */
-public class Lf extends Fixed {
+class Lf extends Fixed {
 
     private static final byte[] LF = new byte[] { '\n' };
 

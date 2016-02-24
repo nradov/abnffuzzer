@@ -1,17 +1,14 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 import java.util.Random;
 import java.util.Set;
-
-import com.github.abnffuzzer.Fuzzer;
-import com.github.abnffuzzer.Rule;
 
 /**
  * %x00-1F / %x7F. Controls.
  *
  * @author Nick Radov
  */
-public final class Ctl extends Rule {
+final class Ctl extends Rule {
 
     private static final byte[] DEL = new byte[] { '\u007F' };
 

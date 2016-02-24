@@ -18,6 +18,13 @@
  */
 package com.github.abnffuzzer;
 
+/**
+ * Alternatives: Rule1 / Rule2.
+ *
+ * @author Nick Radov
+ * @see <a href="https://tools.ietf.org/html/rfc5234#section-3.2" target="_">
+ *      IETF RFC 5234: 3.2. Alternatives: Rule1 / Rule2</a>
+ */
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -25,8 +32,14 @@ import java.util.stream.Collectors;
 
 import com.github.abnffuzzer.antlr4.AbnfParser.AlternationContext;
 
-public class Alternation extends Element {
+class Alternation extends Element {
 
+    /**
+     * Create a new {@code Alternation} from an ANTLR context.
+     *
+     * @param elements
+     *            ANTLR context
+     */
     public Alternation(final AlternationContext elements) {
         super(elements);
     }

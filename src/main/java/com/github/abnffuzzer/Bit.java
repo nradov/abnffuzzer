@@ -1,17 +1,14 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 import java.util.Random;
 import java.util.Set;
-
-import com.github.abnffuzzer.Fuzzer;
-import com.github.abnffuzzer.Rule;
 
 /**
  * BIT = "0" / "1".
  *
  * @author Nick Radov
  */
-public final class Bit extends Rule {
+final class Bit extends Rule {
 
     private static final byte[] ZERO = new byte[] { (byte) '0' };
     private static final byte[] ONE = new byte[] { (byte) '1' };

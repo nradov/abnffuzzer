@@ -32,27 +32,15 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint</arg>
+						<arg>-Xdoclint</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<windowtitle>ABNF Fuzzer</windowtitle>
-					<doctitle>ABNF Fuzzer</doctitle>
-					<detectLinks>true</detectLinks>
-					<detectOfflineLinks>true</detectOfflineLinks>
-					<linksource>true</linksource>
-					<detectJavaApiLink>true</detectJavaApiLink>
-					<links>
-						<link>http://www.antlr.org/api/Java/</link>
-						<link>http://junit.org/javadoc/latest/</link>
-						<link>https://commons.apache.org/proper/commons-cli/javadocs/api-release/</link>
-						<link>https://docs.oracle.com/javaee/7/api/</link>
-					</links>
-				</configuration>
-				<version>2.10.3</version>
-			</plugin>
+
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
@@ -101,7 +89,29 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<windowtitle>ABNF Fuzzer</windowtitle>
+					<doctitle>ABNF Fuzzer</doctitle>
+					<detectLinks>true</detectLinks>
+					<detectOfflineLinks>true</detectOfflineLinks>
+					<linksource>true</linksource>
+					<detectJavaApiLink>true</detectJavaApiLink>
+					<links>
+						<link>http://www.antlr.org/api/Java/</link>
+						<link>http://junit.org/javadoc/latest/</link>
+						<link>https://commons.apache.org/proper/commons-cli/javadocs/api-release/</link>
+						<link>https://docs.oracle.com/javaee/7/api/</link>
+					</links>
+				</configuration>
+				<version>2.10.3</version>
+			</plugin>
+		</plugins>
+	</reporting>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

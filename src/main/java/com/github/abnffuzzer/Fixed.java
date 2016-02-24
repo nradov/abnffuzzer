@@ -1,10 +1,7 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 import java.util.Random;
 import java.util.Set;
-
-import com.github.abnffuzzer.Fuzzer;
-import com.github.abnffuzzer.Rule;
 
 abstract class Fixed extends Rule {
 

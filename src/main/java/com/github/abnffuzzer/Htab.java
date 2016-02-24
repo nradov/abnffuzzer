@@ -1,11 +1,11 @@
-package com.github.abnffuzzer.core;
+package com.github.abnffuzzer;
 
 /**
  * %x09. Horizontal tab.
  *
  * @author Nick Radov
  */
-public class Htab extends Fixed {
+class Htab extends Fixed {
 
     private static final byte[] HTAB = new byte[] { '\t' };
 
