@@ -61,15 +61,12 @@ class Terminal extends Element {
         case Characters:
             final int dashIndex = value.indexOf('-');
             if (dashIndex == -1) {
-                final int dotIndex = value.indexOf('.');
-                if (dotIndex == -1) {
-                    // character
-                    return new byte[] {
-                            (byte) Integer.parseInt(value, radix.value) };
-                } else {
-                    throw new UnsupportedOperationException(
-                            "not implemented yet");
+                final String[] split = value.split("\\.");
+                final byte[] result = new byte[split.length];
+                for (int i = 0; i < split.length; i++) {
+                    result[i] = (byte) Integer.parseInt(split[i], radix.value);
                 }
+                return result;
             } else {
                 // value range alternatives
                 final int min = Integer.parseUnsignedInt(

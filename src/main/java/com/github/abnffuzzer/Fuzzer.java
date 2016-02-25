@@ -1,17 +1,22 @@
 package com.github.abnffuzzer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -26,6 +31,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -51,6 +57,16 @@ public class Fuzzer {
     /** Map of rule names to their elements. */
     private final Map<String, Rule> ruleList;
 
+    private static final String LINE_SEPARATOR = System
+            .getProperty("line.separator");
+
+    // Apache Commons CLI help formatter constants
+    private static final String HEADER = "By default ABNF rules are read from stdin and "
+            + "random values matching the specified rule name "
+            + "are written to stdout.";
+    private static final String FOOTER = "For documentation and details please "
+            + "visit: <https://github.com/nradov/abnffuzzer>.";
+
     /**
      * Parse a set of ABNF rules and generate one or more matching random
      * values. By default it reads the rules from {@code stdin} and writes one
@@ -73,10 +89,23 @@ public class Fuzzer {
                 "string inserted between output values (default to the \"line.separator\" property)");
         options.addOption("i", "input", true, "input file path");
         options.addOption("o", "output", true, "output file path");
-        options.addOption("e", "encoding", true,
-                "character encoding (default to US ASCII)");
+        options.addOption("c", "charset", true,
+                "name of one of the standard Java character sets;"
+                        + " if this option isn't specified then the output will be raw bytes");
+        options.addOption("e", "exclude", true,
+                "comma-separated list of names of an ABNF rules to exclude when generating the values");
+        options.addOption("?", "help", false, "print this message");
+
         final CommandLineParser parser = new DefaultParser();
         final CommandLine cmd = parser.parse(options, args);
+
+        final HelpFormatter formatter = new HelpFormatter();
+        if (cmd.hasOption("?")) {
+            formatter.printHelp(Fuzzer.class.getSimpleName(), HEADER, options,
+                    FOOTER, true);
+            return;
+        }
+
         final int count;
         if (cmd.hasOption("count")) {
             count = Integer.parseInt(cmd.getOptionValue("count"));
@@ -87,18 +116,55 @@ public class Fuzzer {
             count = 1;
         }
 
-        final Fuzzer f;
-        if (cmd.hasOption("input")) {
-            f = new Fuzzer(new File(cmd.getOptionValue("input")));
+        final String separator;
+        if (cmd.hasOption("separator")) {
+            separator = cmd.getOptionValue("separator");
         } else {
-            f = new Fuzzer(System.in);
+            separator = LINE_SEPARATOR;
         }
 
-        if (cmd.getArgList().size() != 1) {
-            throw new IllegalArgumentException("must specify 1 rule name");
+        final Charset charset;
+        if (cmd.hasOption("charset")) {
+            charset = Charset.forName(cmd.getOptionValue("charset"));
+        } else {
+            charset = null;
         }
-        final String ruleName = cmd.getArgList().get(0);
-        System.out.print(f.generateAscii(ruleName));
+
+        final Set<String> exclude;
+        if (cmd.hasOption("exclude")) {
+            exclude = new HashSet<>();
+            exclude.addAll(
+                    Arrays.asList(cmd.getOptionValue("exclude").split(",")));
+        } else {
+            exclude = Collections.emptySet();
+        }
+        try (final OutputStream out = cmd.hasOption("output")
+                ? new FileOutputStream(new File(cmd.getOptionValue("output")))
+                : System.out) {
+            final Fuzzer f;
+            if (cmd.hasOption("input")) {
+                f = new Fuzzer(new File(cmd.getOptionValue("input")));
+            } else {
+                f = new Fuzzer(System.in);
+            }
+
+            if (cmd.getArgList().size() != 1) {
+                throw new IllegalArgumentException("must specify 1 rule name");
+            }
+            final String ruleName = cmd.getArgList().get(0);
+
+            final PrintWriter pw = new PrintWriter(out);
+            for (int i = 0; i < count; i++) {
+                if (i > 0) {
+                    pw.write(separator);
+                }
+                if (charset == null) {
+                    out.write(f.generate(ruleName, exclude));
+                } else {
+                    pw.write(f.generate(ruleName, exclude, charset));
+                }
+            }
+        }
     }
 
     /**
@@ -110,7 +176,22 @@ public class Fuzzer {
      *             if the rules can't be read from the URL
      */
     public Fuzzer(final URL url) throws IOException {
-        this(url.openStream());
+        this(new InputStreamHolder(url));
+    }
+
+    private Fuzzer(final InputStreamHolder ish) throws IOException {
+        this(ish.is);
+        // prevent resource leakage
+        ish.is.close();
+    }
+
+    private static class InputStreamHolder {
+
+        final InputStream is;
+
+        InputStreamHolder(final URL url) throws IOException {
+            is = url.openStream();
+        }
     }
 
     /**
@@ -246,6 +327,7 @@ public class Fuzzer {
      *            allows for testing code that implements only a subset of an
      *            RFC
      * @return random sequence of characters which matches the specified rule
+     *         encoded in the US_ASCII character set
      * @throws IllegalArgumentException
      *             if {@code ruleName} doesn't exist
      * @throws IllegalStateException

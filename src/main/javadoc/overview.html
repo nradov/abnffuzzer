@@ -5,14 +5,16 @@
 </HEAD>
 <BODY>
 	<p>
-		Fuzz tester for Augmented Backus-Naur Form (ABNF) rules as defined in
-		<a href="https://tools.ietf.org/html/rfc5234" target="_" title="IETF">RFC
+		<a href="https://www.owasp.org/index.php/Fuzzing" target="_">Fuzz</a>
+		tester for Augmented Backus-Naur Form (ABNF) rules as defined in <a
+			href="https://tools.ietf.org/html/rfc5234" target="_" title="IETF">RFC
 			5234</a>. This library can directly parse the ABNF rules, then generate
-		random output matching those rules. That output can be fed in a test
-		framework such as <a target="_" href="http://junit.org/">JUnit</a> to
-		search for defects in an application which implements the rules. The
-		most common use case would be testing implementations of other IETF
-		RFCs.
+		random output matching those rules. That output can be fed into test
+		cases for a framework such as <a target="_" href="http://junit.org/">JUnit</a>
+		to search for defects in an application which implements the rules.
+		The most common use case would be testing implementations of other
+		IETF RFCs. Fuzz testing is useful for improving test coverage and
+		catching edge case defects
 	</p>
 	<p>This library does not support the original BNF format. However
 		you can manually update the syntax to match.</p>
@@ -26,11 +28,24 @@
 		<code>generate</code>
 		methods to create each test value. For example, if you want to test an
 		implementation of an ABNF rule named "foo" from RFC "9999" the code
-		would look something like this.</p>
+		would look something like this.
+	</p>
 	<pre>
 File file = new File("rfc9999.txt");
 Fuzzer fuzzer = new Fuzzer(file);
 System.out.println(fuzzer.generateAscii("foo"));
+		</pre>
+	<p>
+		This application can also be used from the command line. (You need to
+		have the ANTLR <a href="http://www.antlr.org/download.html" target="_">Java
+			runtime binaries jar</a> in your CLASSPATH.) For example to read ABNF
+		rules defined in
+		<code>rfc9999.txt</code>
+		and output 10 values matching rule "foo" and encoded in the US_ASCII
+		character set you could use a command like this.
+	</p>
+	<pre>
+java -jar AbnfFuzzer-1.0.0.jar -n 10 -i rfc9999.txt foo
 		</pre>
 </BODY>
 </HTML>
