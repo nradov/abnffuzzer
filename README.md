@@ -15,5 +15,22 @@ baz = "World!"
 If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. You can also try the IETF [ABNF Extraction](https://tools.ietf.org/abnf/) tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results.
 
 ### JUnit
+In order to use the library. Fuzz testing is more likely to test. For example let's say you have a class named MyClass containing a method named myMethod which takes a String parameter and returns `true` if that parameter matches ABNF rule "foo" defined in RFC 99999. 
+
+```java
+    @Test
+    public void testMyMethod() throws IOException {
+        File file = new File("rfc99999.txt");
+        Fuzzer fuzzer = new Fuzzer(file);
+        
+        MyClass m = new MyClass();
+        for (int i = 0; i < 100; i++) {
+            assertTrue(m.myMethod(fuzzer.generateAscii("foo")));
+        }
+    }
+```
+
+For additional samples see the [JUnit test cases](https://github.com/nradov/abnffuzzer/tree/master/src/test/java/com/github/abnffuzzer) in this repository.
 
 ### Command Line
+For testing web services or applications written in other languages this tool can also be called from the command line.
