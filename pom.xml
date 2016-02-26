@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github</groupId>
-	<artifactId>AbnfFuzzer</artifactId>
+	<groupId>com.github.nradov</groupId>
+	<artifactId>abnffuzzer</artifactId>
 	<version>0.1.0</version>
 	<packaging>jar</packaging>
 	<properties>
@@ -54,10 +54,12 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<!-- http://mvnrepository.com/artifact/com.github.github/site-maven-plugin -->
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.9</version>
+				<version>0.12</version>
 				<configuration>
+					<server>github</server>
 					<message>Generated site for site-maven-plugin 0.9</message>
 					<!-- Destination directory -->
 					<path>site-plugin</path>
@@ -179,5 +181,7 @@
 			</properties>
 		</developer>
 	</developers>
+		<distributionManagement>
 
+	</distributionManagement>
 </project>

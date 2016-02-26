@@ -38,14 +38,21 @@ System.out.println(fuzzer.generateAscii("foo"));
 	<p>
 		This application can also be used from the command line. (You need to
 		have the ANTLR <a href="http://www.antlr.org/download.html" target="_">Java
-			runtime binaries jar</a> in your CLASSPATH.) For example to read ABNF
-		rules defined in
-		<code>rfc9999.txt</code>
+			runtime binaries jar</a> and Apache <a
+			href="https://commons.apache.org/proper/commons-cli/" target="_">Commons
+			CLI</a> in your CLASSPATH.) For example to read ABNF rules defined in
+		<code>rfc99999.txt</code>
 		and output 10 values matching rule "foo" and encoded in the US_ASCII
 		character set you could use a command like this.
 	</p>
 	<pre>
-java -jar AbnfFuzzer-1.0.0.jar -n 10 -i rfc9999.txt foo
+java com.github.nradov.abnffuzzer.Fuzzer -n 10 -i rfc99999.txt foo
 		</pre>
+	<p>
+		For further documentation and samples please see the GitHub <a
+			href="https://github.com/nradov/abnffuzzer" target="_">repository</a>
+		and the <a href="http://nradov.github.io/abnffuzzer/site-plugin/"
+			target="_">Maven generated site</a>.
+	</p>
 </BODY>
 </HTML>
