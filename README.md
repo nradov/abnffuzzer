@@ -1,7 +1,7 @@
 # ABNF Fuzzer
 This is a Java [fuzz testing](http://pages.cs.wisc.edu/~bart/fuzz/) tool that can find defects in implementations of [Augmented Backus-Naur Form](https://tools.ietf.org/html/rfc5234) (ABNF) rules such as IETF RFCs. You can use it to generate random inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](http://www.antlr.org/).
 
-For additional documentation including dependencies and Javadoc please see the [Maven generated site](http://nradov.github.io/abnffuzzer/site-plugin/).
+For additional documentation including dependency information and Javadoc please see the [Maven generated site](http://nradov.github.io/abnffuzzer/site-plugin/).
 
 ## Usage
 This tool can be called directly from Java code — such as a JUnit test case — or from the command line. In order to use it you first need a file containing **only** ABNF rule definitions. Here's a sample of simple ABNF rules file.
@@ -33,4 +33,8 @@ In order to use the library. Fuzz testing is more likely to test. For example le
 For additional samples see the [JUnit test cases](https://github.com/nradov/abnffuzzer/tree/master/src/test/java/com/github/abnffuzzer) in this repository.
 
 ### Command Line
-For testing web services or applications written in other languages this tool can also be called from the command line.
+For testing web services or applications written in other languages this tool can also be called from the command line. Binary jar file releases are available through this repository. In order to 
+
+```
+java com.github.nradov.abnffuzzer.Fuzzer -n 1000 -i rfc99999.txt -o testcases.txt foo
+```
