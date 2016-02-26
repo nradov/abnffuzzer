@@ -5,9 +5,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -28,6 +31,24 @@ public class FuzzerTest {
 
     @Test
     public void testMain() throws ParseException, IOException {
+        final File input = File.createTempFile(FuzzerTest.class.getSimpleName(),
+                null);
+        input.deleteOnExit();
+        try (final PrintWriter pw = new PrintWriter(
+                new FileOutputStream(input))) {
+            pw.println("foo = \"foo\" / bar\n");
+            pw.flush();
+        }
+        final File output = File
+                .createTempFile(FuzzerTest.class.getSimpleName(), null, null);
+        output.deleteOnExit();
+        Fuzzer.main(new String[] { "--count=10", "--separator=_",
+                "--input=" + input.getAbsolutePath(),
+                "--output=" + output.getAbsolutePath(),
+                "--charset=" + StandardCharsets.US_ASCII, "--exclude=bar",
+                "foo" });
+        assertEquals(10 * "foo".length() + 9, output.length());
+
         OutputStream os = new ByteArrayOutputStream();
         System.setOut(new PrintStream(os));
         Fuzzer.main(new String[] { "-?" });

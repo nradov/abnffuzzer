@@ -1,5 +1,7 @@
 package com.github.abnffuzzer;
 
+import static org.apache.commons.cli.Option.builder;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -68,6 +70,23 @@ public class Fuzzer {
             + "visit: <https://github.com/nradov/abnffuzzer>.";
 
     /**
+     * Short and long command line option names for use with Commons CLI.
+     */
+    private static enum OptionName {
+        Count("n", "count"), Separator("s", "separator"), Input("i",
+                "input"), Output("o", "output"), Charset("c",
+                        "charset"), Exclude("e", "exclude"), Help("?", "help");
+
+        final String opt;
+        final String longOpt;
+
+        OptionName(final String opt, final String longOpt) {
+            this.opt = opt;
+            this.longOpt = longOpt;
+        }
+    }
+
+    /**
      * Parse a set of ABNF rules and generate one or more matching random
      * values. By default it reads the rules from {@code stdin} and writes one
      * value to {@code stdout}. Command-line parameters can be used to read from
@@ -83,74 +102,60 @@ public class Fuzzer {
     public static void main(final String[] args)
             throws ParseException, IOException {
         final Options options = new Options();
-        options.addOption("n", "count", true,
-                "specify the number of random values to generate (default to 1)");
-        options.addOption("s", "separator", true,
-                "string inserted between output values (default to the \"line.separator\" property)");
-        options.addOption("i", "input", true, "input file path");
-        options.addOption("o", "output", true, "output file path");
-        options.addOption("c", "charset", true,
-                "name of one of the standard Java character sets;"
-                        + " if this option isn't specified then the output will be raw bytes");
-        options.addOption("e", "exclude", true,
-                "comma-separated list of names of an ABNF rules to exclude when generating the values");
-        options.addOption("?", "help", false, "print this message");
-
+        addOptions(options);
         final CommandLineParser parser = new DefaultParser();
         final CommandLine cmd = parser.parse(options, args);
 
-        final HelpFormatter formatter = new HelpFormatter();
-        if (cmd.hasOption("?")) {
+        if (cmd.hasOption(OptionName.Help.opt)) {
+            final HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp(Fuzzer.class.getSimpleName(), HEADER, options,
                     FOOTER, true);
             return;
         }
 
+        if (cmd.getArgList().size() != 1) {
+            System.err.println("must specify 1 rule name");
+            return;
+        }
+
         final int count;
-        if (cmd.hasOption("count")) {
-            count = Integer.parseInt(cmd.getOptionValue("count"));
+        if (cmd.hasOption(OptionName.Count.opt)) {
+            count = Integer.parseInt(cmd.getOptionValue(OptionName.Count.opt));
             if (count < 1) {
-                throw new IllegalArgumentException("count must be >= 1");
+                System.err.println(OptionName.Count.longOpt + " must be >= 1");
+                return;
             }
         } else {
             count = 1;
         }
 
-        final String separator;
-        if (cmd.hasOption("separator")) {
-            separator = cmd.getOptionValue("separator");
-        } else {
-            separator = LINE_SEPARATOR;
-        }
+        final String separator = cmd.hasOption(OptionName.Separator.opt)
+                ? cmd.getOptionValue(OptionName.Separator.opt) : LINE_SEPARATOR;
 
-        final Charset charset;
-        if (cmd.hasOption("charset")) {
-            charset = Charset.forName(cmd.getOptionValue("charset"));
-        } else {
-            charset = null;
-        }
+        final Charset charset = cmd.hasOption(OptionName.Charset.opt)
+                ? Charset.forName(cmd.getOptionValue(OptionName.Charset.opt))
+                : null;
 
         final Set<String> exclude;
-        if (cmd.hasOption("exclude")) {
+        if (cmd.hasOption(OptionName.Exclude.opt)) {
             exclude = new HashSet<>();
             exclude.addAll(
-                    Arrays.asList(cmd.getOptionValue("exclude").split(",")));
+                    Arrays.asList(cmd.getOptionValues(OptionName.Exclude.opt)));
         } else {
             exclude = Collections.emptySet();
         }
-        try (final OutputStream out = cmd.hasOption("output")
-                ? new FileOutputStream(new File(cmd.getOptionValue("output")))
+        try (final OutputStream out = cmd.hasOption(OptionName.Output.opt)
+                ? new FileOutputStream(
+                        new File(cmd.getOptionValue(OptionName.Output.opt)))
                 : System.out) {
             final Fuzzer f;
-            if (cmd.hasOption("input")) {
-                f = new Fuzzer(new File(cmd.getOptionValue("input")));
+            if (cmd.hasOption(OptionName.Input.opt)) {
+                f = new Fuzzer(
+                        new File(cmd.getOptionValue(OptionName.Input.opt)));
             } else {
                 f = new Fuzzer(System.in);
             }
 
-            if (cmd.getArgList().size() != 1) {
-                throw new IllegalArgumentException("must specify 1 rule name");
-            }
             final String ruleName = cmd.getArgList().get(0);
 
             final PrintWriter pw = new PrintWriter(out);
@@ -164,7 +169,43 @@ public class Fuzzer {
                     pw.write(f.generate(ruleName, exclude, charset));
                 }
             }
+            pw.flush();
+            out.flush();
         }
+    }
+
+    private static void addOptions(final Options options) {
+        options.addOption(builder(OptionName.Count.opt)
+                .longOpt(OptionName.Count.longOpt).hasArg().argName("number")
+                .valueSeparator().type(Integer.class)
+                .desc("number of random values to generate (default to 1)")
+                .build());
+        options.addOption(builder(OptionName.Separator.opt)
+                .longOpt(OptionName.Separator.longOpt).valueSeparator().hasArg()
+                .valueSeparator().type(String.class)
+                .desc("string inserted between output values (default to the \"line.separator\" property)")
+                .build());
+        options.addOption(
+                builder(OptionName.Input.opt).longOpt(OptionName.Input.longOpt)
+                        .valueSeparator().hasArg().argName("path")
+                        .type(String.class).desc("input file path").build());
+        options.addOption(builder(OptionName.Output.opt)
+                .longOpt(OptionName.Output.longOpt).valueSeparator().hasArg()
+                .argName("path").type(String.class).desc("output file path")
+                .build());
+        options.addOption(builder(OptionName.Charset.opt)
+                .longOpt(OptionName.Charset.longOpt).hasArg().valueSeparator()
+                .type(String.class)
+                .desc("name of one of the standard Java character sets;"
+                        + " if this option isn't specified then the output will be raw bytes")
+                .build());
+        options.addOption(builder(OptionName.Exclude.opt)
+                .longOpt(OptionName.Exclude.longOpt).hasArgs().valueSeparator()
+                .desc("comma-separated list of names of an ABNF rules to exclude when generating the values")
+                .build());
+        options.addOption(
+                builder(OptionName.Help.opt).longOpt(OptionName.Help.longOpt)
+                        .desc("print this message").build());
     }
 
     /**
