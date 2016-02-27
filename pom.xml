@@ -208,7 +208,8 @@
 		<connection>scm:git:git://github.com/nradov/abnffuzzer</connection>
 		<url>https://github.com/nradov/abnffuzzer</url>
 	  <tag>abnffuzzer-0.1.1</tag>
-  </scm>
+	  <developerConnection>scm:git:git://github.com/nradov/abnffuzzer</developerConnection>
+	</scm>
 	<description>
 		Fuzz tester for Augmented Backus-Naur Form (ABNF) rules as defined in
 		IETF RFC 5234. This library can directly parse a variety of input
