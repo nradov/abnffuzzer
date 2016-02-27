@@ -219,10 +219,10 @@
 		<system>GitHub</system>
 	</issueManagement>
 	<scm>
-		<connection>scm:git:git://github.com/nradov/abnffuzzer</connection>
+		<connection>scm:git:git://github.com/nradov/abnffuzzer.git</connection>
 		<url>https://github.com/nradov/abnffuzzer</url>
 		<tag>abnffuzzer-0.1.4</tag>
-		<developerConnection>scm:git:git://github.com/nradov/abnffuzzer</developerConnection>
+		<developerConnection>scm:git:git://github.com/nradov/abnffuzzer.git</developerConnection>
 	</scm>
 	<description>
 		Fuzz tester for Augmented Backus-Naur Form (ABNF) rules as defined in
