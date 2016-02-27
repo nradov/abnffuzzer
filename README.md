@@ -1,5 +1,5 @@
 # ABNF Fuzzer
-This is a Java [fuzz testing](http://pages.cs.wisc.edu/~bart/fuzz/) tool that can find defects in implementations of [Augmented Backus-Naur Form](https://tools.ietf.org/html/rfc5234) (ABNF) rules such as IETF RFCs. You can use it to generate random inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](http://www.antlr.org/). Thanks to @rainerschuster for providing the [Anbf.g4](https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4) grammar.
+This is a Java [fuzz testing](https://en.wikipedia.org/wiki/Fuzz_testing) tool that can find defects in implementations of [Augmented Backus-Naur Form](https://tools.ietf.org/html/rfc5234) (ABNF) rules such as IETF RFCs. You can use it to generate random valid inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](http://www.antlr.org/). Thanks to @rainerschuster for providing the [Anbf.g4](https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4) grammar.
 
 For additional documentation including dependency information and Javadoc please see the [Maven generated site](http://nradov.github.io/abnffuzzer/site-plugin/).
 
