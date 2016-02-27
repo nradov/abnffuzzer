@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.nradov</groupId>
 	<artifactId>abnffuzzer</artifactId>
-	<version>0.1.3</version>
+	<version>0.1.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
