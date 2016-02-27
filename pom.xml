@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.nradov</groupId>
 	<artifactId>abnffuzzer</artifactId>
-	<version>0.1.2-SNAPSHOT</version>
+	<version>0.1.2</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -207,7 +207,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/nradov/abnffuzzer</connection>
 		<url>https://github.com/nradov/abnffuzzer</url>
-	  <tag>abnffuzzer-0.1.1</tag>
+	  <tag>abnffuzzer-0.1.2</tag>
 	  <developerConnection>scm:git:git://github.com/nradov/abnffuzzer</developerConnection>
 	</scm>
 	<description>
