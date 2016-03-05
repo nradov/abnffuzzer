@@ -205,7 +205,7 @@
 		</dependency>
 	</dependencies>
 	<name>ABNF Fuzzer</name>
-	<url>https://github.com/nradov/abnffuzzer</url>
+	<url>https://github.com/nradov/${project.artifactId}</url>
 	<inceptionYear>2016</inceptionYear>
 	<licenses>
 		<license>
@@ -215,13 +215,13 @@
 		</license>
 	</licenses>
 	<issueManagement>
-		<url>https://github.com/nradov/abnffuzzer/issues</url>
+		<url>https://github.com/nradov/${project.artifactId}/issues</url>
 		<system>GitHub</system>
 	</issueManagement>
 	<scm>
-		<connection>scm:git:git://github.com/nradov/abnffuzzer.git</connection>
-		<url>https://github.com/nradov/abnffuzzer</url>
-		<developerConnection>scm:git:git://github.com/nradov/abnffuzzer.git</developerConnection>
+		<connection>scm:git:ssh://github.com/nradov/${project.artifactId}.git</connection>
+		<url>https://github.com/nradov/${project.artifactId}</url>
+		<developerConnection>scm:git:ssh://github.com/nradov/${project.artifactId}.git</developerConnection>
 	  <tag>abnffuzzer-0.1.5</tag>
   </scm>
 	<description>
