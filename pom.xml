@@ -31,7 +31,7 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<useReleaseProfile>false</useReleaseProfile>
 					<releaseProfiles>release</releaseProfiles>
-					<goals>deploy</goals>
+					<goals>deploy nexus-staging:release</goals>
 					<pushChanges>false</pushChanges>
 				</configuration>
 			</plugin>
@@ -220,9 +220,9 @@
 		<system>GitHub</system>
 	</issueManagement>
 	<scm>
-		<connection>scm:git:ssh://github.com/nradov/${project.artifactId}.git</connection>
+		<connection>scm:git:https://github.com/nradov/${project.artifactId}.git</connection>
 		<url>https://github.com/nradov/${project.artifactId}</url>
-		<developerConnection>scm:git:ssh://github.com/nradov/${project.artifactId}.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/nradov/${project.artifactId}.git</developerConnection>
 	  <tag>abnffuzzer-0.1.6</tag>
   </scm>
 	<description>
