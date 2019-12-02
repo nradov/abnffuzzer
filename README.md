@@ -1,5 +1,5 @@
 # ABNF Fuzzer
-This is a Java [fuzz testing](https://en.wikipedia.org/wiki/Fuzz_testing) tool that can find defects in implementations of [Augmented Backus-Naur Form](https://tools.ietf.org/html/rfc5234) (ABNF) rules such as IETF RFCs. You can use it to generate random valid inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](http://www.antlr.org/). Thanks to @rainerschuster for providing the [Anbf.g4](https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4) grammar.
+This is a Java [fuzz testing](https://en.wikipedia.org/wiki/Fuzz_testing) tool that can find defects in implementations of Augmented Backus-Naur Form (ABNF) rules such as IETF RFCs. ABNF is itself defined in RFCs [5234](https://tools.ietf.org/html/rfc5234) and [7405](https://tools.ietf.org/html/rfc7405). You can use it to generate random valid inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](http://www.antlr.org/). Thanks to @rainerschuster for providing the [Anbf.g4](https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4) grammar.
 
 For additional documentation including dependency information and Javadoc please see the [Maven generated site](http://nradov.github.io/abnffuzzer/site-plugin/).
 
@@ -12,9 +12,9 @@ bar = "Hello"
 baz = "World!"
 ```
 
-If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. You can also try the IETF [ABNF Extraction](https://tools.ietf.org/abnf/) tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results.
+If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. You can also try the IETF [ABNF Extraction](https://tools.ietf.org/abnf/) tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results. You should also manually remove any prose values from the rules; obviously this tool can't interpret prose so it's usually best to replace those with literals.
 
-Options are available to limit the output by excluding certain rules. This can be useful if your application only provides a partial implementation of a particular rule and you don't want to test certain alternate forms. The tool can generate output as either raw bytes (octets), or characters strings encoded using any of the [standard Java character sets](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/StandardCharsets.html).
+Options are available to limit the output by excluding certain rules. This can be useful if your application only provides a partial implementation of a particular rule and you don't want to test certain alternate forms. The tool can generate output as either raw bytes (octets), or characters strings encoded using any of the [standard Java character sets](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/nio/charset/StandardCharsets.html).
 
 The probability of finding a particular defect with fuzz testing increases with the number of test cases, up to an asymptotic limit. You have to balance that against test execution time. I recommend doing an extended fuzz testing run with thousands or millions of iterations the first time; let it run for hours. Then use a much smaller number of iterations in your automated continuous integration process so that it doesn't cause long delays.
 
