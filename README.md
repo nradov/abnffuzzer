@@ -12,7 +12,7 @@ bar = "Hello"
 baz = "World!"
 ```
 
-If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. You can also try the IETF [ABNF Extraction](https://tools.ietf.org/abnf/) tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results. You should also manually remove any prose values from the rules; obviously this tool can't interpret prose so it's usually best to replace those with literals.
+If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. Be sure to check the errata as those correct the rules in some RFCs. You can also try the IETF [ABNF Extraction](https://tools.ietf.org/abnf/) tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results. You should also manually remove any prose values from the rules; obviously this tool can't interpret prose so it's usually best to replace those with literals.
 
 Options are available to limit the output by excluding certain rules. This can be useful if your application only provides a partial implementation of a particular rule and you don't want to test certain alternate forms. The tool can generate output as either raw bytes (octets), or characters strings encoded using any of the [standard Java character sets](https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/nio/charset/StandardCharsets.html).
 
