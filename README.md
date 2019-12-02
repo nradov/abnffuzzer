@@ -4,7 +4,7 @@ This is a Java [fuzz testing](https://en.wikipedia.org/wiki/Fuzz_testing) tool t
 For additional documentation including dependency information and Javadoc please see the [Maven generated site](http://nradov.github.io/abnffuzzer/site-plugin/).
 
 ## Usage
-This tool can be called directly from Java code — such as a [JUnit](http://junit.org/) test case — or from the command line. In order to use it you first need a file containing **only** ABNF rule definitions. Here's a sample of simple ABNF rules file.
+This tool can be called directly from Java code — such as a [JUnit](http://junit.org/) test case — or from the command line. In order to use it you first need a file containing **only** ABNF rule definitions. Here's a sample simple ABNF rules file.
 
 ```
 foo = bar / baz
