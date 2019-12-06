@@ -312,7 +312,7 @@ public class Fuzzer {
 	 *
 	 * @param ruleName ABNF rule name
 	 * @return random sequence which matches the specified rule
-	 * @throws IOException
+	 * @throws IOException shouldn't happen
 	 * @throws IllegalArgumentException if {@code ruleName} doesn't exist
 	 * @throws IllegalStateException    if any defined rule references another rule
 	 *                                  which doesn't exist
