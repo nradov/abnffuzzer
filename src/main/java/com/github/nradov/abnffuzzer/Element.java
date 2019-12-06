@@ -70,8 +70,8 @@ class Element {
 	 * @return a single byte array containing all of the parameter byte arrays in
 	 *         order
 	 * @throws IOException shouldn't happen
-	 * @see <a href="https://stackoverflow.com/a/9133993" title="Stack Overflow"
-	 *      target="_">Easy way to concatenate two byte arrays<>
+	 * @see <a href="https://stackoverflow.com/a/9133993" target="_">Easy way to
+	 *      concatenate two byte arrays</a>
 	 */
 	public static byte[] concatenate(final List<byte[]> content) throws IOException {
 		if (content.size() == 1) {
@@ -84,14 +84,13 @@ class Element {
 		return baos.toByteArray();
 	}
 
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) throws IOException {
-        final List<byte[]> childContent = new ArrayList<>(elements.size());
-        for (final Element e : elements) {
-            childContent.add(e.generate(f, r, exclude));
-        }
-        return concatenate(childContent);
-    }
+	public byte[] generate(final Fuzzer f, final Random r, final Set<String> exclude) throws IOException {
+		final List<byte[]> childContent = new ArrayList<>(elements.size());
+		for (final Element e : elements) {
+			childContent.add(e.generate(f, r, exclude));
+		}
+		return concatenate(childContent);
+	}
 
 	@Override
 	public String toString() {

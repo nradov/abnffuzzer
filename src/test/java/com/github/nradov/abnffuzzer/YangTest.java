@@ -13,11 +13,8 @@ import org.junit.Test;
  * 
  * @author Damian ONeill
  * @author Nick Radov
- * @see <a href="https://tools.ietf.org/html/rfc7950" title="IETF" target=
- *      "_">RFC 7950</a>
- * @see <a href="https://github.com/nradov/abnffuzzer/issues/2" title="Github"
- *      target="_">No enum constant
- *      com.github.nradov.abnffuzzer.Terminal.Radix.s</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7950" target="_">RFC 7950</a>
+ * @see <a href="https://github.com/nradov/abnffuzzer/issues/2" target="_">No enum constant com.github.nradov.abnffuzzer.Terminal.Radix.s</a>
  */
 public class YangTest {
 

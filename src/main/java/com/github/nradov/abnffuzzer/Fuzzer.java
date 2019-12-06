@@ -51,7 +51,7 @@ import com.github.nradov.abnffuzzer.antlr4.AbnfParser.Rule_Context;
  * ABNF file. Complex ABNF files may require increasing your JVM's stack size;
  * for Oracle this can be done with the <code>-Xss</code> <i>size</i> <a href=
  * "https://docs.oracle.com/en/java/javase/13/docs/specs/man/java.html#extra-options-for-java"
- * target="_" title="The java Command">option</a>.
+ * target="_">option</a>.
  *
  * @author Nick Radov
  */
