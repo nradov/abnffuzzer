@@ -4,55 +4,36 @@
 <TITLE>ABNF Fuzzer API Overview</TITLE>
 </HEAD>
 <BODY>
-	<p>
-		<a href="https://www.owasp.org/index.php/Fuzzing" target="_">Fuzz</a>
-		tester for Augmented Backus-Naur Form (ABNF) rules as defined in <a
-			href="https://tools.ietf.org/html/rfc5234" target="_" title="IETF">RFC
-			5234</a>. This library can directly parse the ABNF rules, then generate
-		random output matching those rules. That output can be fed into test
-		cases for a framework such as <a target="_" href="http://junit.org/">JUnit</a>
-		to search for defects in an application which implements the rules.
-		The most common use case would be testing implementations of other
-		IETF RFCs. Fuzz testing is useful for improving test coverage and
-		catching edge case defects
-	</p>
-	<p>This library does not support the original BNF format. However
-		you can manually update the syntax to match.</p>
-	<p>
-		In order to use the library you must first create an input file
-		containing ABNF rule definitions. In most cases you can do this by
-		copying and pasting rules from a larger specification document such as
-		an IETF RFC. Create a
-		<code>Fuzzer</code>
-		object from that file, and then call one of the
-		<code>generate</code>
-		methods to create each test value. For example, if you want to test an
-		implementation of an ABNF rule named "foo" from RFC "9999" the code
-		would look something like this.
-	</p>
-	<pre>
-File file = new File("rfc9999.txt");
-Fuzzer fuzzer = new Fuzzer(file);
-System.out.println(fuzzer.generateAscii("foo"));
-		</pre>
-	<p>
-		This application can also be used from the command line. (You need to
-		have the ANTLR <a href="http://www.antlr.org/download.html" target="_">Java
-			runtime binaries jar</a> and Apache <a
-			href="https://commons.apache.org/proper/commons-cli/" target="_">Commons
-			CLI</a> in your CLASSPATH.) For example to read ABNF rules defined in
-		<code>rfc99999.txt</code>
-		and output 10 values matching rule "foo" and encoded in the US_ASCII
-		character set you could use a command like this.
-	</p>
-	<pre>
-java com.github.nradov.abnffuzzer.Fuzzer -n 10 -i rfc99999.txt foo
-		</pre>
-	<p>
-		For further documentation and samples please see the GitHub <a
-			href="https://github.com/nradov/abnffuzzer" target="_">repository</a>
-		and the <a href="http://nradov.github.io/abnffuzzer/site-plugin/"
-			target="_">Maven generated site</a>.
-	</p>
+	<article><h1>ABNF Fuzzer</h1>
+<p>This is a Java <a href="https://en.wikipedia.org/wiki/Fuzz_testing" rel="nofollow">fuzz testing</a> tool that can find defects in implementations of Augmented Backus-Naur Form (ABNF) rules such as IETF RFCs. ABNF is itself defined in RFCs <a href="https://tools.ietf.org/html/rfc5234" rel="nofollow">5234</a> and <a href="https://tools.ietf.org/html/rfc7405" rel="nofollow">7405</a>. You can use it to generate random valid inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn <a href="http://www.antlr.org/" rel="nofollow">ANTLR</a>. Thanks to @rainerschuster for providing the <a href="https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4">Anbf.g4</a> grammar.</p>
+<p>For additional documentation including dependency information and Javadoc please see the <a href="http://nradov.github.io/abnffuzzer/site-plugin/" rel="nofollow">Maven generated site</a>.</p>
+<h2>Usage</h2>
+<p>This tool can be called directly from Java code — such as a <a href="http://junit.org/" rel="nofollow">JUnit</a> test case — or from the command line. In order to use it you first need a file containing <strong>only</strong> ABNF rule definitions. Here's a sample simple ABNF rules file.</p>
+<pre><code>foo = bar / baz
+bar = "Hello"
+baz = "World!"
+</code></pre>
+<p>If you're testing an implementation of an IETF RFC you can simply copy and paste the formal rule definitions into a new file; usually they're all contained in a single section near the end of the document. Be sure to check the errata as those correct the rules in some RFCs. You can also try the IETF <a href="https://tools.ietf.org/abnf/" rel="nofollow">ABNF Extraction</a> tool, although it appears to produce incorrect output for some RFCs so you may need to manually edit the results. You should also manually remove any prose values from the rules; obviously this tool can't interpret prose so it's usually best to replace those with literals.</p>
+<p>Options are available to limit the output by excluding certain rules. This can be useful if your application only provides a partial implementation of a particular rule and you don't want to test certain alternate forms. The tool can generate output as either raw bytes (octets), or characters strings encoded using any of the <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/nio/charset/StandardCharsets.html" rel="nofollow">standard Java character sets</a>.</p>
+<p>The probability of finding a particular defect with fuzz testing increases with the number of test cases, up to an asymptotic limit. You have to balance that against test execution time. I recommend doing an extended fuzz testing run with thousands or millions of iterations the first time; let it run for hours. Then use a much smaller number of iterations in your automated continuous integration process so that it doesn't cause long delays.</p>
+<p>With some complex ABNF files the fuzzer may cause the JVM to run out of memory or stack space due to excessive recursion. If you run into this problem you may need to exclude the problematic rules or manually edit the ABNF file to block certain paths.</p>
+<h3>JUnit</h3>
+<p>Call one of the <code>generate</code> methods wherever you need a random <code>String</code> or <code>byte[]</code> value matching a particular ABNF rule. For example let's say you have a class named <code>MyClass</code> containing a method named <code>myMethod</code> which takes a <code>String</code> parameter and returns <code>true</code> if that parameter matches ABNF rule "foo" defined in RFC 99999.</p>
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">@Test</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> testMyMethod() throws <span class="pl-smi">IOException</span> {
+        <span class="pl-smi">File</span> file <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s"><span class="pl-pds">"</span>rfc99999.txt<span class="pl-pds">"</span></span>);
+        <span class="pl-smi">Fuzzer</span> fuzzer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Fuzzer</span>(file);
+        
+        <span class="pl-smi">MyClass</span> m <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">MyClass</span>();
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> <span class="pl-c1">100</span>; i<span class="pl-k">++</span>) {
+            assertTrue(m<span class="pl-k">.</span>myMethod(fuzzer<span class="pl-k">.</span>generateAscii(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)));
+        }
+    }</pre></div>
+<p>For additional samples see the <a href="https://github.com/nradov/abnffuzzer/tree/master/src/test/java/com/github/nradov/abnffuzzer">JUnit test cases</a> in this repository.</p>
+<h3>Command Line</h3>
+<p>For testing web services or applications written in other languages this tool can also be called from the command line. Binary jar file releases are available through this repository. By default it reads ABNF rules from <code>stdin</code>, generates a random value matching the ABNF rule named as the last command-line parameter, and writes it to <code>stdout</code>. You need to have the ANTLR <a href="http://www.antlr.org/download.html" rel="nofollow">Java runtime binaries</a> and Apache <a href="https://commons.apache.org/proper/commons-cli/" rel="nofollow">Commons CLI</a> in your <code>CLASSPATH</code>. Command-line options are available to control the number of values to generate, character set, input source, ouput destination. Use the <code>-?</code> command-line option for help on those options.</p>
+<pre><code>java com.github.nradov.abnffuzzer.Fuzzer -n 1000 -i rfc99999.txt -o testcases.txt foo
+</code></pre>
+</article>
 </BODY>
 </HTML>
