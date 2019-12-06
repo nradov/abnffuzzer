@@ -18,6 +18,8 @@ Options are available to limit the output by excluding certain rules. This can b
 
 The probability of finding a particular defect with fuzz testing increases with the number of test cases, up to an asymptotic limit. You have to balance that against test execution time. I recommend doing an extended fuzz testing run with thousands or millions of iterations the first time; let it run for hours. Then use a much smaller number of iterations in your automated continuous integration process so that it doesn't cause long delays.
 
+With some complex ABNF files the fuzzer may cause the JVM to run out of memory or stack space due to excessive recursion. If you run into this problem you may need to exclude the problematic rules or manually edit the ABNF file to block certain paths.
+
 ### JUnit
 Call one of the `generate` methods wherever you need a random `String` or `byte[]` value matching a particular ABNF rule. For example let's say you have a class named `MyClass` containing a method named `myMethod` which takes a `String` parameter and returns `true` if that parameter matches ABNF rule "foo" defined in RFC 99999. 
 
