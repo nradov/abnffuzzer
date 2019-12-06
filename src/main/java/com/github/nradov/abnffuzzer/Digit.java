@@ -1,19 +1,21 @@
 package com.github.nradov.abnffuzzer;
 
-import java.util.Random;
-import java.util.Set;
-
 /**
  * %x30-39. 0-9.
  *
  * @author Nick Radov
  */
-final class Digit extends Rule {
+final class Digit extends SingleByte {
+	
+	private static final byte[][] BYTES = new byte[10][1];
+	static {
+		for (byte i = 0; i < (byte) BYTES.length; i++) {
+			BYTES[i] = new byte[] {(byte) (i + '0')};
+		}
+	}
 
-    @Override
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
-        return new byte[] { (byte) (r.nextInt(10) + 0x30) };
-    }
-
+	Digit() {
+		super(BYTES);
+	}
+	
 }

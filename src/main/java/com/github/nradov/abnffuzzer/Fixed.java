@@ -13,7 +13,7 @@ abstract class Fixed extends Rule {
 
     @Override
     public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
+            final Set<String> excluded) {
         return value;
     }
 

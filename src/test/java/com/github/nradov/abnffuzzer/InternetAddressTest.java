@@ -11,8 +11,6 @@ import javax.mail.internet.InternetAddress;
 
 import org.junit.Test;
 
-import com.github.nradov.abnffuzzer.Fuzzer;
-
 /**
  * Test the {@link InternetAddress} class.
  *
@@ -20,24 +18,23 @@ import com.github.nradov.abnffuzzer.Fuzzer;
  */
 public class InternetAddressTest {
 
-    @SuppressWarnings("serial")
-    private static final Set<String> EXCLUDE_2822 = Collections
-            .unmodifiableSet(new HashSet<String>() {
-                {
-                    add("CFWS");
-                    add("comment");
-                    add("quoted-string");
-                    add("obs-local-part");
-                }
-            });
+	@SuppressWarnings("serial")
+	private static final Set<String> EXCLUDE_2822 = Collections.unmodifiableSet(new HashSet<String>() {
+		{
+			add("CFWS");
+			add("comment");
+			add("quoted-string");
+			add("obs-local-part");
+		}
+	});
 
-    @Test
+	@Test
     public void testInternetAddress()
             throws URISyntaxException, IOException, AddressException {
         final Fuzzer rfc2822 = new Fuzzer(
-                InternetAddressTest.class.getResourceAsStream("/rfc2822.txt"));
+                this.getClass().getResourceAsStream("/rfc2822.txt"));
         final Fuzzer rfc1034 = new Fuzzer(
-                InternetAddressTest.class.getResourceAsStream("/rfc1034.txt"));
+        		this.getClass().getResourceAsStream("/rfc1034.txt"));
 
         for (int i = 0; i < 1000; i++) {
             final String localPart = rfc2822.generateAscii("local-part",

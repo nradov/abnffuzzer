@@ -1,5 +1,6 @@
 package com.github.nradov.abnffuzzer;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ class Option extends Element {
 
     @Override
     public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
+            final Set<String> exclude) throws IOException {
         if (elements.size() != 1) {
             throw new IllegalStateException("option should contain 1 element");
         }

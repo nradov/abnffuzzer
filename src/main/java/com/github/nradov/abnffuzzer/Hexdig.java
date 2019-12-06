@@ -1,22 +1,23 @@
 package com.github.nradov.abnffuzzer;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.Locale;
 
 /**
  * DIGIT / "A" / "B" / "C" / "D" / "E" / "F".
  *
  * @author Nick Radov
  */
-final class Hexdig extends Rule {
+final class Hexdig extends SingleByte {
 
-    private static final byte[] HEXDIG_BYTES = new byte[] { '0', '1', '2', '3',
-            '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	private static final byte[][] BYTES = new byte[0x10][1];
+	static {
+		for (byte b = 0; b < (byte) BYTES.length; b++) {
+			BYTES[(int) b] = new byte[] { (byte) Integer.toString(b, BYTES.length).toUpperCase(Locale.US).charAt(0) };
+		}
+	}
 
-    @Override
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
-        return new byte[] { HEXDIG_BYTES[r.nextInt(HEXDIG_BYTES.length)] };
-    }
+	Hexdig() {
+		super(BYTES);
+	}
 
 }

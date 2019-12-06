@@ -1,19 +1,21 @@
 package com.github.nradov.abnffuzzer;
 
-import java.util.Random;
-import java.util.Set;
-
 /**
  * CHAR = %x01-7F. Any 7-bit US-ASCII character, excluding NUL.
  *
  * @author Nick Radov
  */
-final class Char extends Rule {
+final class Char extends SingleByte {
 
-    @Override
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
-        return new byte[] { (byte) (r.nextInt(0x7F) + 1) };
-    }
+	private static final byte[][] BYTES = new byte['\u007F' - '\u0001' + 1][1];
+	static {
+		for (byte i = 0; i < (byte) BYTES.length; i++) {
+			BYTES[i] = new byte[] {(byte) (i + '\u0001')};
+		}
+	}
 
+	Char() {
+		super(BYTES);
+	}
+	
 }

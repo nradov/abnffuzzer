@@ -1,26 +1,16 @@
 package com.github.nradov.abnffuzzer;
 
-import java.util.Random;
-import java.util.Set;
-
 /**
  * BIT = "0" / "1".
  *
  * @author Nick Radov
  */
-final class Bit extends Rule {
+final class Bit extends SingleByte {
 
-    private static final byte[] ZERO = new byte[] { (byte) '0' };
-    private static final byte[] ONE = new byte[] { (byte) '1' };
+	private static final byte[][] BYTES = new byte[][] { new byte[] { (byte) '0' }, new byte[] { (byte) '1' } };
 
-    @Override
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
-        if (r.nextBoolean()) {
-            return ZERO;
-        } else {
-            return ONE;
-        }
-    }
+	Bit() {
+		super(BYTES);
+	}
 
 }

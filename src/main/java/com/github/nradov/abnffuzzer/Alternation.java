@@ -18,6 +18,7 @@
  */
 package com.github.nradov.abnffuzzer;
 
+import java.io.IOException;
 /**
  * Alternatives: Rule1 / Rule2.
  *
@@ -46,7 +47,7 @@ class Alternation extends Element {
 
     @Override
     public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
+            final Set<String> exclude) throws IOException {
         if (elements.isEmpty()) {
             throw new IllegalStateException();
         }
@@ -58,7 +59,7 @@ class Alternation extends Element {
         }
         return filtered.get(r.nextInt(filtered.size())).generate(f, r, exclude);
     }
-
+    
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

@@ -1,5 +1,6 @@
 package com.github.nradov.abnffuzzer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -73,13 +74,14 @@ class Repetition extends Element {
 
     @Override
     public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
+            final Set<String> exclude) throws IOException {
         final List<byte[]> childContent = new ArrayList<>(atLeast);
         for (int i = 0; i < atLeast; i++) {
             childContent.add(super.generate(f, r, exclude));
         }
         int repetitions = atLeast;
-        while (repetitions < atMost && r.nextBoolean()) {
+        // steadily decrease the probability as we add more repetitions
+        while (repetitions < atMost && r.nextFloat() < (0.5f / (repetitions - atLeast + 1))) {
             childContent.add(super.generate(f, r, exclude));
             repetitions++;
         }

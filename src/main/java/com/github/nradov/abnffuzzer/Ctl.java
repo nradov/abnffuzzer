@@ -1,25 +1,22 @@
 package com.github.nradov.abnffuzzer;
 
-import java.util.Random;
-import java.util.Set;
-
 /**
  * %x00-1F / %x7F. Controls.
  *
  * @author Nick Radov
  */
-final class Ctl extends Rule {
+final class Ctl extends SingleByte {
 
-    private static final byte[] DEL = new byte[] { '\u007F' };
+	private static final byte[][] BYTES = new byte['\u001F' + 1][1];
+	static {
+		for (byte i = '\u0000'; i <= '\u001F'; i++) {
+			BYTES[i] = new byte[] {(byte) (i)};
+		}
+		BYTES[BYTES.length - 1] = new byte[] { '\u007F' };
+	}
 
-    @Override
-    public byte[] generate(final Fuzzer f, final Random r,
-            final Set<String> exclude) {
-        if (r.nextBoolean()) {
-            return new byte[] { (byte) (r.nextInt(0x1F) + 1) };
-        } else {
-            return DEL;
-        }
-    }
-
+	Ctl() {
+		super(BYTES);
+	}
+	
 }
