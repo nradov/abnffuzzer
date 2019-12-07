@@ -1,0 +1,35 @@
+-classpath
+'C:/Users/nrado/.m2/repository/commons-cli/commons-cli/1.4/commons-cli-1.4.jar;C:/Users/nrado/.m2/repository/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar;C:/Users/nrado/.m2/repository/org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar;C:/Users/nrado/.m2/repository/org/antlr/antlr4/4.7.2/antlr4-4.7.2.jar;C:/Users/nrado/.m2/repository/com/ibm/icu/icu4j/61.1/icu4j-61.1.jar;C:/Users/nrado/.m2/repository/org/antlr/ST4/4.1/ST4-4.1.jar;C:/Users/nrado/.m2/repository/org/abego/treelayout/org.abego.treelayout.core/1.0.3/org.abego.treelayout.core-1.0.3.jar;C:/Users/nrado/.m2/repository/org/antlr/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar'
+-encoding
+'UTF-8'
+-overview
+'C:/Users/nrado/git/abnffuzzer/src/main/javadoc/overview.html'
+-protected
+-source
+'8'
+-sourcepath
+'C:/Users/nrado/git/abnffuzzer/src/main/java;C:/Users/nrado/git/abnffuzzer/target/generated-sources/antlr4;C:/Users/nrado/git/abnffuzzer/target/generated-sources/annotations;C:/Users/nrado/git/abnffuzzer/src/main/javadoc'
+-author
+-bottom
+'Copyright &#169; 2016&#x2013;2019. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/nrado/git/abnffuzzer/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'ABNF Fuzzer'
+-link
+'https://www.antlr.org/api/Java'
+-link
+'https://junit.org/junit4/javadoc/latest'
+-link
+'https://commons.apache.org/proper/commons-cli/javadocs/api-release'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' 'C:/Users/nrado/git/abnffuzzer/target/javadoc-bundle-options'
+-linksource
+-use
+-version
+-windowtitle
+'ABNF Fuzzer'
