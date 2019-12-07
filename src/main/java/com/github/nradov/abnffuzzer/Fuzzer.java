@@ -312,7 +312,7 @@ public class Fuzzer {
 	 *
 	 * @param ruleName ABNF rule name
 	 * @return random sequence which matches the specified rule
-	 * @throws IOException shouldn't happen
+	 * @throws IOException              shouldn't happen
 	 * @throws IllegalArgumentException if {@code ruleName} doesn't exist
 	 * @throws IllegalStateException    if any defined rule references another rule
 	 *                                  which doesn't exist
@@ -332,7 +332,7 @@ public class Fuzzer {
 	 *                 RFC
 	 * @return random sequence of characters which matches the specified rule
 	 *         encoded in the US_ASCII character set
-	 * @throws IOException
+	 * @throws IOException              shouldn't happen
 	 * @throws IllegalArgumentException if {@code ruleName} doesn't exist
 	 * @throws IllegalStateException    if any defined rule references another rule
 	 *                                  which doesn't exist
@@ -348,7 +348,7 @@ public class Fuzzer {
 	 * @param ruleName ABNF rule name
 	 * @return random sequence of characters which matches the specified rule
 	 *         encoded in the US_ASCII character set
-	 * @throws IOException
+	 * @throws IOException              shouldn't happen
 	 * @throws IllegalArgumentException if {@code ruleName} doesn't exist
 	 * @throws IllegalStateException    if any defined rule references another rule
 	 *                                  which doesn't exist
@@ -382,7 +382,7 @@ public class Fuzzer {
 	 * @param charset  encoding for the return value
 	 * @return random sequence of characters which matches the specified rule
 	 *         encoded in the specified character set
-	 * @throws IOException
+	 * @throws IOException              shouldn't happen
 	 * @throws IllegalArgumentException if {@code ruleName} doesn't exist
 	 * @throws IllegalStateException    if any defined rule references another rule
 	 *                                  which doesn't exist
