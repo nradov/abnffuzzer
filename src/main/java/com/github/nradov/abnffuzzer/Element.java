@@ -46,6 +46,8 @@ class Element {
 		}
 	};
 
+	private static final String SEPARATORS = "[]()/*";
+	
 	Element(final ParseTree elements) {
 		for (int i = 0; i < elements.getChildCount(); i++) {
 			final ParseTree child = elements.getChild(i);
@@ -56,8 +58,7 @@ class Element {
 				final TerminalNode tn = (TerminalNode) child;
 				final String value = tn.toString();
 				// we don't want to store nodes for separators
-				if (!(value.startsWith("[") || value.startsWith("]") || value.startsWith("(") || value.startsWith(")")
-						|| value.startsWith("/") || value.startsWith("*"))) {
+				if (!SEPARATORS.contains(value.subSequence(0, 1))) {
 					this.elements.add(new com.github.nradov.abnffuzzer.Terminal(tn));
 				}
 			} else {
