@@ -1,10 +1,10 @@
 package com.github.nradov.abnffuzzer;
 
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.RepeatContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 class Repeat extends Element {
 
-    public Repeat(final RepeatContext elements) {
+    public Repeat(final ParserRuleContext elements) {
         super(elements);
     }
 

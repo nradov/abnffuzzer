@@ -9,7 +9,7 @@ class Terminal extends Element {
 
 	private final String value;
 
-	private static enum Type {
+	private enum Type {
 		Characters, LiteralText, CaseSensitive, CaseInsensitive, RuleName, ProseVal;
 	}
 
@@ -18,7 +18,7 @@ class Terminal extends Element {
 	private static final Pattern RULE_NAME_PATTERN = Pattern.compile("\\A[a-z][a-z\\d\\-]*\\z",
 			Pattern.CASE_INSENSITIVE);
 
-	private static enum Radix {
+	private enum Radix {
 		/** Binary. */
 		b(2),
 		/** Decimal. */

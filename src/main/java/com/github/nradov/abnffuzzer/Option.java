@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.OptionContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * Optional Sequence: [RULE].
@@ -21,7 +21,7 @@ class Option extends Element {
      * @param elements
      *            ANTLR context
      */
-    public Option(final OptionContext elements) {
+    public Option(final ParserRuleContext elements) {
         super(elements);
     }
 

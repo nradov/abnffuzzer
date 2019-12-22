@@ -79,7 +79,7 @@ public class Fuzzer {
 	/**
 	 * Short and long command line option names for use with Commons CLI.
 	 */
-	private static enum OptionName {
+	private enum OptionName {
 		Count("n", "count"), Separator("s", "separator"), Input("i", "input"), Output("o", "output"),
 		Charset("c", "charset"), Exclude("e", "exclude"), Help("?", "help");
 

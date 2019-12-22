@@ -31,7 +31,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.AlternationContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 class Alternation extends Element {
 
@@ -41,7 +41,7 @@ class Alternation extends Element {
      * @param elements
      *            ANTLR context
      */
-    public Alternation(final AlternationContext elements) {
+    public Alternation(final ParserRuleContext elements) {
         super(elements);
     }
 

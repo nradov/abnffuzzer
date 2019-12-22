@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 import com.github.nradov.abnffuzzer.antlr4.AbnfParser.RepeatContext;
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
 
 class Repetition extends Element {
 
@@ -16,7 +17,7 @@ class Repetition extends Element {
     private final int atLeast;
     private final int atMost;
 
-    public Repetition(final RepetitionContext elements) {
+    public Repetition(final ParserRuleContext elements) {
         switch (elements.getChildCount()) {
         case 1:
             atLeast = 1;

@@ -1,6 +1,6 @@
 package com.github.nradov.abnffuzzer;
 
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.ConcatenationContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * Concatenation: Rule1 Rule2.
@@ -17,7 +17,7 @@ class Concatenation extends Element {
      * @param elements
      *            ANTLR context
      */
-    public Concatenation(final ConcatenationContext elements) {
+    public Concatenation(final ParserRuleContext elements) {
         super(elements);
     }
 

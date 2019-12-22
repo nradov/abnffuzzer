@@ -24,11 +24,9 @@ class Lwsp extends Rule {
 		final List<byte[]> childContent = new ArrayList<>(0);
 		while (r.nextBoolean()) {
 			if (r.nextBoolean()) {
-				childContent.add(WSP.generate(f, r, exclude));
-			} else {
 				childContent.add(CRLF.generate(f, r, exclude));
-				childContent.add(WSP.generate(f, r, exclude));
 			}
+			childContent.add(WSP.generate(f, r, exclude));
 		}
 		return concatenate(childContent);
 	}

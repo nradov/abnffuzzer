@@ -3,10 +3,13 @@ package com.github.nradov.abnffuzzer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -25,30 +28,30 @@ import com.github.nradov.abnffuzzer.antlr4.AbnfParser.RepetitionContext;
  */
 class Element {
 
-	final List<Element> elements = new ArrayList<Element>();
+	final List<Element> elements = new ArrayList<>();
 
 	Element() {
 	}
 
+	@SuppressWarnings("serial")
+	private static final Map<Class<? extends ParserRuleContext>, ElementFactory> CONTEXT_CTOR = new HashMap<>() {
+		{
+			put(AlternationContext.class, Alternation::new);
+			put(ConcatenationContext.class, Concatenation::new);
+			put(ElementContext.class, Element::new);
+			put(GroupContext.class, Group::new);
+			put(OptionContext.class, Option::new);
+			put(RepeatContext.class, Repeat::new);
+			put(RepetitionContext.class, Repetition::new);
+		}
+	};
+
 	Element(final ParseTree elements) {
 		for (int i = 0; i < elements.getChildCount(); i++) {
 			final ParseTree child = elements.getChild(i);
-			if (child instanceof AlternationContext) {
-				this.elements.add(new Alternation((AlternationContext) child));
-			} else if (child instanceof ConcatenationContext) {
-				this.elements.add(new Concatenation((ConcatenationContext) child));
-			} else if (child instanceof ConcatenationContext) {
-				this.elements.add(new Concatenation((ConcatenationContext) child));
-			} else if (child instanceof ElementContext) {
-				this.elements.add(new Element(child));
-			} else if (child instanceof GroupContext) {
-				this.elements.add(new Group((GroupContext) child));
-			} else if (child instanceof OptionContext) {
-				this.elements.add(new Option((OptionContext) child));
-			} else if (child instanceof RepeatContext) {
-				this.elements.add(new Repeat((RepeatContext) child));
-			} else if (child instanceof RepetitionContext) {
-				this.elements.add(new Repetition((RepetitionContext) child));
+
+			if (CONTEXT_CTOR.containsKey(child.getClass())) {
+				this.elements.add(CONTEXT_CTOR.get(child.getClass()).create((ParserRuleContext) child));
 			} else if (child instanceof TerminalNode) {
 				final TerminalNode tn = (TerminalNode) child;
 				final String value = tn.toString();

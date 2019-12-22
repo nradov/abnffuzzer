@@ -1,6 +1,6 @@
 package com.github.nradov.abnffuzzer;
 
-import com.github.nradov.abnffuzzer.antlr4.AbnfParser.GroupContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * Sequence Group: (Rule1 Rule2).
@@ -17,7 +17,7 @@ class Group extends Element {
      * @param elements
      *            ANTLR context
      */
-    public Group(final GroupContext elements) {
+    public Group(final ParserRuleContext elements) {
         super(elements);
     }
 
