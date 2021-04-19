@@ -15,8 +15,10 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -63,7 +65,7 @@ public class Fuzzer {
 	private transient Random random;
 
 	/** Map of rule names to their elements. */
-	private final Map<String, Rule> ruleList;
+	private final Map<String, List<Rule>> ruleList;
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -284,7 +286,8 @@ public class Fuzzer {
 			{
 				for (int i = 0; i < tree.getChildCount(); i++) {
 					final ParseTree child = tree.getChild(i);
-					if (child instanceof Rule_Context && child.getChildCount() == 3) {
+					if (child instanceof Rule_Context
+						&& (child.getChildCount() == 3 || child.getChildCount() == 4)) {
 						// rule definition
 						final ParseTree name = child.getChild(0);
 						if (!(name instanceof TerminalNode)) {
@@ -294,12 +297,19 @@ public class Fuzzer {
 						if (!(equalSign instanceof TerminalNode) || !"=".equals(equalSign.toString())) {
 							throw new IllegalArgumentException();
 						}
-						final ParseTree elements = child.getChild(2);
+						final ParseTree elements = child.getChild(child.getChildCount()-1);
 						if (!(elements instanceof ElementsContext)) {
 							throw new IllegalArgumentException();
 						}
 
-						put(name.toString(), new Rule((ElementsContext) elements));
+						Rule rule = new Rule((ElementsContext) elements);
+						if (child.getChildCount() == 3) {
+							List<Rule> rules = new ArrayList<>();
+							rules.add(rule);
+							put(name.toString(), rules);
+						} else {
+							get(name.toString()).add(rule);
+						}
 					}
 				}
 			}
@@ -370,7 +380,9 @@ public class Fuzzer {
 	 *                                  which doesn't exist
 	 */
 	public byte[] generate(final String ruleName, final Set<String> exclude) throws IOException {
-		return getRule(ruleName).generate(this, getRandom(), exclude);
+                Random r = getRandom();
+                List<Rule> rules = getRule(ruleName);
+		return rules.get(r.nextInt(rules.size())).generate(this, r, exclude);
 	}
 
 	/**
@@ -394,24 +406,24 @@ public class Fuzzer {
 	// built in rules
 
 	@SuppressWarnings("serial")
-	private static final Map<String, Rule> BUILT_IN_RULES = Collections.unmodifiableMap(new HashMap<String, Rule>() {
+	private static final Map<String, List<Rule>> BUILT_IN_RULES = Collections.unmodifiableMap(new HashMap<String, List<Rule>>() {
 		{
-			put("ALPHA", new Alpha());
-			put("BIT", new Bit());
-			put("CHAR", new Char());
-			put("CR", new Cr());
-			put("CRLF", new CrLf());
-			put("CTL", new Ctl());
-			put("DIGIT", new Digit());
-			put("DQUOTE", new Dquote());
-			put("HEXDIG", new Hexdig());
-			put("HTAB", new Htab());
-			put("LF", new Lf());
-			put("LWSP", new Lwsp());
-			put("OCTET", new Octet());
-			put("SP", new Sp());
-			put("VCHAR", new Vchar());
-			put("WSP", new Wsp());
+			put("ALPHA", Arrays.asList(new Alpha()));
+			put("BIT", Arrays.asList(new Bit()));
+			put("CHAR", Arrays.asList(new Char()));
+			put("CR", Arrays.asList(new Cr()));
+			put("CRLF", Arrays.asList(new CrLf()));
+			put("CTL", Arrays.asList(new Ctl()));
+			put("DIGIT", Arrays.asList(new Digit()));
+			put("DQUOTE", Arrays.asList(new Dquote()));
+			put("HEXDIG", Arrays.asList(new Hexdig()));
+			put("HTAB", Arrays.asList(new Htab()));
+			put("LF", Arrays.asList(new Lf()));
+			put("LWSP", Arrays.asList(new Lwsp()));
+			put("OCTET", Arrays.asList(new Octet()));
+			put("SP", Arrays.asList(new Sp()));
+			put("VCHAR", Arrays.asList(new Vchar()));
+			put("WSP", Arrays.asList(new Wsp()));
 		}
 	});
 
@@ -423,7 +435,7 @@ public class Fuzzer {
 	 * @return the rule
 	 * @throws IllegalArgumentException if the rule name isn't defined
 	 */
-	Rule getRule(final String ruleName) {
+	List<Rule> getRule(final String ruleName) {
 		if (BUILT_IN_RULES.containsKey(ruleName)) {
 			return BUILT_IN_RULES.get(ruleName);
 		} else if (ruleList.containsKey(ruleName)) {

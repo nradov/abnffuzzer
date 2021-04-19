@@ -1,6 +1,7 @@
 package com.github.nradov.abnffuzzer;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -109,7 +110,8 @@ class Terminal extends Element {
 			}
 			return caseInsensitiveBytes;
 		case RuleName:
-			return f.getRule(value).generate(f, r, excluded);
+			List<Rule> rules = f.getRule(value);
+			return rules.get(r.nextInt(rules.size())).generate(f, r, excluded);
 		case ProseVal:
 			// we can't generate anything for prose
 			return EMPTY;
