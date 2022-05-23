@@ -1,9 +1,10 @@
 package com.github.nradov.abnffuzzer;
 
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-class RuleList extends TreeMap<String, Rule> {
+class RuleList extends TreeMap<String, List<Rule>> {
 
     private static final String LINE_SEPARATOR = System
             .getProperty("line.separator");
@@ -17,9 +18,14 @@ class RuleList extends TreeMap<String, Rule> {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        for (final Entry<String, Rule> e : this.entrySet()) {
-            sb.append(e.getKey()).append(" = ").append(e.getValue())
-                    .append(LINE_SEPARATOR);
+        boolean first = true;
+        for (final Entry<String, List<Rule>> e : this.entrySet()) {
+            for (Rule r : e.getValue()) {
+                    String def = first ? " =  " : " =/ ";
+                    sb.append(e.getKey()).append(def).append(e.getValue())
+                            .append(LINE_SEPARATOR);
+                    first = false;
+            }
         }
         return sb.toString();
     }
