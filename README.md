@@ -1,3 +1,6 @@
+[![Maven Central Version](https://img.shields.io/maven-central/v/com.github.nradov/abnffuzzer)](https://central.sonatype.com/artifact/com.github.nradov/abnffuzzer)
+[![Javadoc](https://img.shields.io/badge/javadoc-brightgreen.svg)](https://nradov.github.io/abnffuzzer/site-plugin/apidocs/index.html)
+
 # ABNF Fuzzer
 This is a Java [fuzz testing](https://en.wikipedia.org/wiki/Fuzz_testing) tool that can find defects in implementations of Augmented Backus-Naur Form (ABNF) rules such as IETF RFCs. ABNF is itself defined in RFCs [5234](https://tools.ietf.org/html/rfc5234) and [7405](https://tools.ietf.org/html/rfc7405). You can use it to generate random valid inputs for test cases, which can be helpful for finding edge case defects. I wrote it primarily as a way to learn [ANTLR](https://www.antlr.org/). Thanks to @rainerschuster for providing the [Anbf.g4](https://github.com/antlr/grammars-v4/blob/master/abnf/Abnf.g4) grammar.
 
